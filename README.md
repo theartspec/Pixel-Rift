@@ -10,19 +10,30 @@
 
 ### Team Members
 - Member 1: [Anu_Ann_Biju] - [TocH_institute_of_science_and_technology]
-- Member 2: [Adheena_Sajeev_Nair] - [College]
+- Member 2: [Adheena_Sajeev_Nair] - [TocH_institute_of_science_and_technology]
 
 ### Hosted Project Link
 [mention your project hosted link here]
 
 ### Project Description
-[2-3 lines about what your project does]
+[A location-based community app where nearby people can:
+Lend physical items (drill machine, ladder, books, wheelchair)
+Offer small help (driving to hospital, grocery pickup)
+Provide basic services (plumbing, electrical, tutoring)
+Help elderly residents request assistance easily]
 
 ### The Problem statement
-[What problem are you solving?]
+[Elderly people struggle to find trusted help.
+People buy items they use only once.
+Neighbours don’t know each other anymore.
+Local help is fragmented across:
+WhatsApp groups
+Facebook groups
+Random contacts
+No structured trust-based system exists.]
 
 ### The Solution
-[How are you solving it?]
+[We develop a mobile web application to build a community which lends,share and help eachother. Where services and products are easily made available]
 
 ---
 
@@ -31,15 +42,10 @@
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [e.g., JavaScript, Python, Java]
-- Frameworks used: [e.g., React, Django, Spring Boot]
-- Libraries used: [e.g., axios, pandas, JUnit]
-- Tools used: [e.g., VS Code, Git, Docker]
-
-**For Hardware:**
-- Main components: [List main components]
-- Specifications: [Technical specifications]
-- Tools required: [List tools needed]
+- Languages used: [HTML]
+- Frameworks used: []
+- Libraries used: []
+- Tools used: [e.g., VS Code, Git, Calude AI]
 
 ---
 
