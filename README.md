@@ -43,7 +43,7 @@ No structured trust-based system exists.]
 
 **For Software:**
 - Languages used: [HTML,Javascript]
-- Frameworks used: []
+- Frameworks used: [Java script,php,CSS,HTML]
 - Libraries used: []
 - Tools used: [VS Code, Git, Calude AI]
 
@@ -53,9 +53,9 @@ No structured trust-based system exists.]
 
 List the key features of your project:
 - Feature 1: [Community_Building]
-- Feature 2: [Desc]
-- Feature 3: [Description]
-- Feature 4: [Description]
+- Feature 2: [Cost_effectiveness]
+- Feature 3: [Employement]
+- Feature 4: [Quick_availability_of_services]
 
 ---
 
