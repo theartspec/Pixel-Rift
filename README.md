@@ -6,11 +6,11 @@
 
 ## Basic Details
 
-### Team Name: [Name]
+### Team Name: [Pixel_rift]
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
+- Member 1: [Anu_Ann_Biju] - [TocH_institute_of_science_and_technology]
+- Member 2: [Adheena_Sajeev_Nair] - [College]
 
 ### Hosted Project Link
 [mention your project hosted link here]
