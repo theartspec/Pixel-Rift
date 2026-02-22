@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Near Help</title>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary: #A8E6CF;
+    --secondary: #DCEDC1;
+    --accent: #FFD3B6;
+    --soft-blue: #C7CEEA;
+    --text-dark: #2E4057;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: var(--secondary);
+    overflow-x: hidden;
+}
+
+/* Splash Screen */
+#splash {
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-top: 20px;
+}
+
+.hands {
+    font-size: 60px;
+    animation: join 1.5s infinite alternate;
+}
+
+@keyframes join {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+/* Auth Page */
+#authPage {
+    display: none;
+    min-height: 100vh;
+    background: var(--secondary);
+    padding: 40px;
+}
+
+.auth-card {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.auth-card h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: var(--primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: var(--accent);
+}
+
+.google-btn {
+    background: var(--soft-blue);
+    margin-top: 10px;
+}
+
+/* Home Page */
+#homePage {
+    display: none;
+    min-height: 100vh;
+    background: var(--secondary);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: var(--primary);
+}
+
+.menu-icon {
+    font-size: 25px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.app-name {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background: white;
+    box-shadow: 5px 0 10px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: 0.3s;
+}
+
+.sidebar a {
+    display: block;
+    margin: 15px 0;
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* Cards */
+.section {
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.badge {
+    background: var(--accent);
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Splash Screen -->
+<div id="splash">
+    <div class="hands">🤝</div>
+    <div class="logo">Near Help</div>
+</div>
+
+<!-- Authentication Page -->
+<div id="authPage">
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <input type="text" placeholder="Email ID / Phone Number">
+        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Confirm Password">
+        <button onclick="goHome()">Create Account</button>
+        <button class="google-btn">Sign in with Google</button>
+    </div>
+</div>
+
+<!-- Home Page -->
+<div id="homePage">
+
+    <div class="header">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="app-name">Near Help</div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#">Settings</a>
+        <a href="#">Rewards</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">About</a>
+        <a href="#">App Theme</a>
+        <a href="#">Help</a>
+    </div>
+
+    <div class="section">
+
+        <div class="card">
+            <h3>🌟 Reliable & Verified Community</h3>
+            <p>Connect within 1–3 km radius. Safe, trusted & reviewed users.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏠 For Nuclear Families</h3>
+            <p>Plumbing, Electrical help, Babysitting, Emergency drivers.</p>
+        </div>
+
+        <div class="card">
+            <h3>🎒 For Migrant Students</h3>
+            <p>Tool lending, Temporary utensils, Bike rides, Tuition exchange.</p>
+        </div>
+
+        <div class="card">
+            <h3>👵 Elderly Support Mode</h3>
+            <p>Large buttons, Emergency “I Need Help”, Grocery & Medical support.</p>
+        </div>
+
+        <div class="card">
+            <h3>💰 Earn & Save <span class="badge">Rewards</span></h3>
+            <p>Provide services → Get Paid.<br>
+            Regular users → Get loyalty discounts.</p>
+        </div>
+
+    </div>
+</div>
+
+<script>
+setTimeout(() => {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("authPage").style.display = "block";
+}, 2500);
+
+function goHome() {
+    document.getElementById("authPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+}
+
+function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("active");
+}
+</script>
+
+</body>
+</html>
