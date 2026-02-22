@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NearHelp – Community Lending & Assistance</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===================== THEME VARIABLES ===================== */
+:root {
+  --green-primary: #5BAD72;
+  --green-light: #A8D5B5;
+  --green-pale: #E8F5EC;
+  --mint: #C8EDD6;
+  --sage: #87BEAA;
+  --peach: #FFD9C4;
+  --lavender: #D9D4F0;
+  --sky: #C5E8F5;
+  --yellow-soft: #FFF3C4;
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+/* LIGHT MODE */
+[data-theme="light"] {
+  --bg: #FFF8F0;
+  --card-bg: #FFFFFF;
+  --card-bg2: rgba(255,255,255,0.92);
+  --text-dark: #2C3E2D;
+  --text-mid: #5A7060;
+  --text-light: #8FAA93;
+  --border: #A8D5B5;
+  --nav-bg: rgba(255,255,255,0.97);
+  --input-bg: #FFFFFF;
+  --sidebar-bg: #FFFFFF;
+  --overlay: rgba(44,62,45,0.45);
+  --shadow: 0 8px 32px rgba(91,173,114,0.13);
+  --section-alt: #F0FAF3;
+  --splash-bg: #FFFFFF;
+}
+/* DARK MODE */
+[data-theme="dark"] {
+  --bg: #1A2420;
+  --card-bg: #243028;
+  --card-bg2: rgba(28,42,34,0.95);
+  --text-dark: #E8F5EC;
+  --text-mid: #A8D5B5;
+  --text-light: #6A9A74;
+  --border: #3A5A45;
+  --nav-bg: rgba(20,32,26,0.98);
+  --input-bg: #1E2E24;
+  --sidebar-bg: #1A2820;
+  --overlay: rgba(0,0,0,0.65);
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --section-alt: #1E2C22;
+  --splash-bg: #1A2420;
+  --green-pale: #1E3528;
+  --mint: #1A3028;
+  --sky: #1A2A38;
+  --lavender: #1E1E38;
+  --peach: #3A2820;
+  --yellow-soft: #2E2A14;
+}
+/* ELDERLY THEME OVERLAY */
+[data-elderly="true"] {
+  --radius: 24px;
+  --radius-sm: 18px;
+}
+[data-elderly="true"] body { font-size: 18px !important; }
+[data-elderly="true"] .qa-label { font-size: 14px !important; }
+[data-elderly="true"] .qa-icon { font-size: 36px !important; }
+[data-elderly="true"] .bn-label { font-size: 13px !important; }
+[data-elderly="true"] .bn-icon { font-size: 28px !important; }
+[data-elderly="true"] .section-title { font-size: 22px !important; }
+[data-elderly="true"] .bottom-nav { padding: 12px 4px 18px; }
+[data-elderly="true"] .bnav-item { padding: 8px 10px; }
+[data-elderly="true"] .fc-title { font-size: 16px !important; }
+[data-elderly="true"] .fc-sub { font-size: 14px !important; }
+[data-elderly="true"] .seg-card h4 { font-size: 16px !important; }
+[data-elderly="true"] .seg-card p { font-size: 14px !important; }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Quicksand', sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ===================== SPLASH ===================== */
+#splash {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--splash-bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+#splash.hidden { opacity: 0; pointer-events: none; transform: scale(1.04); }
+.splash-circle {
+  width: 110px; height: 110px;
+  background: radial-gradient(circle, var(--green-light), var(--mint));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 56px; margin-bottom: 8px;
+  animation: pulse 1.8s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(91,173,114,0.4);
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(91,173,114,0.4); transform: scale(1); }
+  50% { box-shadow: 0 0 0 20px rgba(91,173,114,0); transform: scale(1.07); }
+}
+.hands-row { display: flex; gap: 0; margin-bottom: 20px; font-size: 48px; }
+.hand-l { animation: hL 2s ease-in-out infinite alternate; display: inline-block; }
+.hand-r { animation: hR 2s ease-in-out infinite alternate; display: inline-block; }
+@keyframes hL { 0% { transform: translateX(-14px); } 100% { transform: translateX(2px); } }
+@keyframes hR { 0% { transform: translateX(14px) scaleX(-1); } 100% { transform: translateX(-2px) scaleX(-1); } }
+.splash-logo-text { font-family: 'Nunito', sans-serif; font-size: 44px; font-weight: 900; color: var(--green-primary); letter-spacing: -1px; animation: fadeUp 1s ease 0.3s both; }
+.splash-logo-text span { color: var(--sage); }
+.splash-tagline { font-size: 15px; color: var(--text-light); margin-top: 6px; font-weight: 600; animation: fadeUp 1s ease 0.55s both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===================== PAGES ===================== */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; animation: pageIn 0.45s ease; }
+@keyframes pageIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===================== AUTH ===================== */
+#authPage {
+  background: linear-gradient(160deg, var(--green-pale) 0%, var(--mint) 40%, var(--sky) 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 24px; position: relative; overflow: hidden;
+}
+.ghibli-deco { position: absolute; pointer-events: none; font-size: 64px; opacity: 0.15; animation: floatDeco 6s ease-in-out infinite; }
+.ghibli-deco:nth-child(1){top:5%;left:3%;animation-delay:0s}
+.ghibli-deco:nth-child(2){top:15%;right:5%;animation-delay:1.5s}
+.ghibli-deco:nth-child(3){bottom:12%;left:8%;animation-delay:3s}
+.ghibli-deco:nth-child(4){bottom:20%;right:6%;animation-delay:2s}
+.ghibli-deco:nth-child(5){top:45%;left:1%;animation-delay:4s;font-size:42px}
+@keyframes floatDeco { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-18px) rotate(5deg)} }
+.auth-card {
+  background: var(--card-bg2); backdrop-filter: blur(20px);
+  border-radius: 28px; padding: 40px 36px 36px;
+  width: 100%; max-width: 440px;
+  box-shadow: 0 20px 60px rgba(91,173,114,0.18), 0 2px 8px rgba(0,0,0,0.06);
+  position: relative; z-index: 2;
+}
+.auth-header { text-align: center; margin-bottom: 24px; }
+.auth-logo { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: var(--green-primary); }
+.auth-logo span { color: var(--sage); }
+.auth-subtitle { font-size: 13px; color: var(--text-light); margin-top: 4px; font-weight: 600; }
+.tab-row { display: flex; background: var(--green-pale); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 22px; }
+.tab-btn { flex: 1; padding: 9px; border: none; background: none; border-radius: 9px; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-light); cursor: pointer; transition: all 0.25s; }
+.tab-btn.active { background: var(--card-bg); color: var(--green-primary); box-shadow: 0 2px 8px rgba(91,173,114,0.18); }
+.input-group { margin-bottom: 14px; }
+.input-group label { display: block; font-size: 12px; font-weight: 700; color: var(--text-mid); margin-bottom: 5px; }
+.input-group input, .input-group select, .input-group textarea {
+  width: 100%; padding: 12px 16px; border: 2px solid var(--border);
+  border-radius: var(--radius-sm); font-family: 'Quicksand', sans-serif;
+  font-size: 14px; font-weight: 600; color: var(--text-dark); background: var(--input-bg);
+  outline: none; transition: border-color 0.2s;
+}
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--green-primary); box-shadow: 0 0 0 3px rgba(91,173,114,0.12); }
+.input-group input::placeholder, .input-group textarea::placeholder { color: var(--text-light); }
+.btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--green-primary), var(--sage)); color: white; border: none; border-radius: var(--radius-sm); font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px rgba(91,173,114,0.35); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,173,114,0.45); }
+.divider { text-align: center; margin: 16px 0; position: relative; color: var(--text-light); font-size: 12px; font-weight: 700; }
+.divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 42%; height: 1px; background: var(--border); }
+.divider::before { left: 0; } .divider::after { right: 0; }
+.btn-google { width: 100%; padding: 13px; background: var(--input-bg); border: 2px solid var(--border); border-radius: var(--radius-sm); font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-dark); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-google:hover { border-color: var(--green-primary); background: var(--green-pale); }
+.pref-section { background: var(--green-pale); border-radius: var(--radius-sm); padding: 14px; margin-top: 14px; }
+.pref-section h4 { font-size: 12px; font-weight: 800; color: var(--text-mid); margin-bottom: 10px; }
+.pref-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.pref-chip { padding: 6px 12px; border-radius: 50px; background: var(--card-bg); border: 2px solid var(--border); font-size: 12px; font-weight: 700; color: var(--text-mid); cursor: pointer; transition: all 0.2s; }
+.pref-chip.selected { background: var(--green-primary); border-color: var(--green-primary); color: white; }
+
+/* ===================== SERVICE SELECTOR PAGE ===================== */
+#servicePage {
+  background: linear-gradient(160deg, var(--green-pale) 0%, var(--sky) 100%);
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 28px 20px; position: relative; overflow: hidden;
+}
+.service-selector { width: 100%; max-width: 420px; }
+.ss-header { text-align: center; margin-bottom: 28px; }
+.ss-header h2 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--text-dark); }
+.ss-header p { font-size: 13px; color: var(--text-mid); margin-top: 5px; font-weight: 600; }
+.ss-greeting { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: var(--green-primary); margin-bottom: 6px; }
+.service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.service-tile {
+  background: var(--card-bg); border-radius: 22px; padding: 22px 16px;
+  text-align: center; cursor: pointer; transition: all 0.22s;
+  box-shadow: var(--shadow); border: 2px solid transparent;
+}
+.service-tile:hover { transform: translateY(-4px); border-color: var(--green-primary); box-shadow: 0 12px 32px rgba(91,173,114,0.22); }
+.service-tile .st-icon { font-size: 44px; display: block; margin-bottom: 10px; }
+.service-tile h3 { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: var(--text-dark); }
+.service-tile p { font-size: 11px; color: var(--text-light); margin-top: 4px; font-weight: 600; line-height: 1.4; }
+.service-tile.highlight { background: linear-gradient(135deg, var(--green-primary), var(--sage)); }
+.service-tile.highlight h3, .service-tile.highlight p { color: white; }
+.ss-skip { text-align: center; margin-top: 18px; font-size: 13px; color: var(--text-light); font-weight: 700; cursor: pointer; }
+.ss-skip:hover { color: var(--green-primary); }
+
+/* ===================== MAIN APP ===================== */
+.top-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: var(--nav-bg); backdrop-filter: blur(16px);
+  padding: 12px 18px; display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 16px rgba(91,173,114,0.1);
+  border-bottom: 1.5px solid var(--green-pale);
+}
+.hamburger { width: 40px; height: 40px; background: var(--green-pale); border-radius: 12px; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+.hamburger span { display: block; width: 20px; height: 2.5px; background: var(--green-primary); border-radius: 2px; transition: all 0.3s; }
+.nav-logo { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; color: var(--green-primary); }
+.nav-logo span { color: var(--sage); }
+.nav-right { display: flex; gap: 10px; align-items: center; }
+.nav-notif { width: 40px; height: 40px; background: var(--peach); border-radius: 12px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; position: relative; }
+.notif-dot { width: 8px; height: 8px; background: #E85D5D; border-radius: 50%; position: absolute; top: 8px; right: 8px; border: 2px solid var(--nav-bg); }
+.nav-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 15px; cursor: pointer; border: 2px solid var(--green-light); overflow: hidden; background: var(--green-primary); }
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Sidebar */
+.sidebar-overlay { position: fixed; inset: 0; z-index: 200; background: var(--overlay); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.sidebar-overlay.open { opacity: 1; pointer-events: all; }
+.sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--sidebar-bg); z-index: 201; transition: left 0.35s cubic-bezier(0.22,1,0.36,1); overflow-y: auto; box-shadow: 8px 0 40px rgba(0,0,0,0.14); }
+.sidebar.open { left: 0; }
+.sidebar-header { background: linear-gradient(135deg, var(--green-primary), var(--sage)); padding: 48px 20px 24px; color: white; }
+.sidebar-prof { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.sidebar-avatar { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.3); border: 2.5px solid rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 22px; overflow: hidden; }
+.sidebar-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.s-name { font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; }
+.s-user { font-size: 12px; opacity: 0.82; font-weight: 600; }
+.s-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 50px; font-size: 11px; margin-top: 8px; font-weight: 700; }
+.s-status { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 3px; }
+.s-status.available { background: #7BEA9A; }
+.s-status.unavailable { background: #E85D5D; }
+.s-status.at-work { background: #FFB74D; }
+.sidebar-nav { padding: 10px 0; }
+.sidebar-item { display: flex; align-items: center; gap: 12px; padding: 13px 20px; font-size: 14px; font-weight: 700; color: var(--text-dark); cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; }
+.sidebar-item:hover { background: var(--green-pale); color: var(--green-primary); border-left-color: var(--green-primary); }
+.si-icon { font-size: 19px; width: 26px; text-align: center; }
+.sidebar-sep { height: 1px; background: var(--green-pale); margin: 6px 14px; }
+
+/* Main Content */
+.main-content { padding: 72px 0 88px; }
+
+/* Trending Suggestions Strip */
+.trending-strip { overflow-x: auto; padding: 10px 16px 4px; white-space: nowrap; }
+.trending-strip::-webkit-scrollbar { display: none; }
+.trending-inner { display: inline-flex; gap: 10px; }
+.trend-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 50px;
+  background: var(--card-bg); border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-mid);
+  cursor: pointer; transition: all 0.2s;
+  opacity: 0.72; white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.trend-chip:hover { opacity: 1; border-color: var(--green-primary); color: var(--green-primary); }
+.trend-chip .tc-fire { font-size: 14px; }
+.trend-label { font-size: 10px; color: var(--text-light); font-weight: 700; padding: 10px 16px 0; }
+
+/* Hero Banner */
+.hero-banner { background: linear-gradient(135deg, var(--green-primary) 0%, var(--sage) 100%); padding: 24px 20px 28px; color: white; position: relative; overflow: hidden; }
+.hero-banner::before { content: ''; position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.08); border-radius: 50%; top: -60px; right: -40px; }
+.hero-banner::after { content: ''; position: absolute; width: 120px; height: 120px; background: rgba(255,255,255,0.06); border-radius: 50%; bottom: -30px; left: 20px; }
+.hero-ghibli { position: absolute; right: 18px; bottom: 0; font-size: 76px; opacity: 0.2; animation: floatDeco 5s ease-in-out infinite; }
+.hero-banner h2 { font-family: 'Nunito', sans-serif; font-size: 21px; font-weight: 900; line-height: 1.3; margin-bottom: 5px; }
+.hero-banner p { font-size: 13px; opacity: 0.88; font-weight: 600; }
+.hero-loc { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.22); padding: 5px 12px; border-radius: 50px; font-size: 12px; font-weight: 700; margin-top: 12px; cursor: pointer; border: none; color: white; }
+.hero-loc:hover { background: rgba(255,255,255,0.32); }
+
+/* Trust Bar */
+.trust-bar { background: var(--green-primary); padding: 16px 20px; display: flex; justify-content: space-around; margin: 14px 16px; border-radius: var(--radius); }
+.trust-stat { text-align: center; color: white; }
+.t-num { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; }
+.t-lbl { font-size: 10px; opacity: 0.85; font-weight: 600; }
+
+/* Section */
+.section { padding: 16px 16px 4px; }
+.section-title { font-family: 'Nunito', sans-serif; font-size: 17px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+/* Emergency */
+.emergency-btn { margin: 0 16px 10px; background: linear-gradient(135deg, #E85D5D, #FF8C7A); border-radius: var(--radius); padding: 16px 18px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.2s; box-shadow: 0 6px 24px rgba(232,93,93,0.3); animation: emergPulse 3s ease-in-out infinite; border: none; width: calc(100% - 32px); }
+@keyframes emergPulse { 0%,100%{box-shadow:0 6px 24px rgba(232,93,93,0.28)} 50%{box-shadow:0 8px 32px rgba(232,93,93,0.52)} }
+.emergency-icon { font-size: 34px; }
+.emergency-text h3 { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: white; }
+.emergency-text p { font-size: 11px; color: rgba(255,255,255,0.85); font-weight: 600; }
+
+/* Quick Actions */
+.quick-actions { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.qa-item { background: var(--card-bg); border-radius: 18px; padding: 14px 8px; text-align: center; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow); border: 1.5px solid transparent; }
+.qa-item:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,173,114,0.22); border-color: var(--green-light); }
+.qa-icon { font-size: 28px; display: block; margin-bottom: 5px; }
+.qa-label { font-size: 11px; font-weight: 800; color: var(--text-mid); }
+
+/* Cards Scroll */
+.cards-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+.cards-row::-webkit-scrollbar { display: none; }
+.feature-card { min-width: 190px; background: var(--card-bg); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; flex-shrink: 0; }
+.feature-card::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; opacity: 0.1; }
+.feature-card.green::before { background: var(--green-primary); }
+.feature-card.peach::before { background: #E85D5D; }
+.feature-card.sky::before { background: #3BA8D4; }
+.feature-card.lav::before { background: #7C6FCD; }
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.14); }
+.fc-icon { font-size: 30px; margin-bottom: 8px; }
+.fc-title { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: var(--text-dark); }
+.fc-sub { font-size: 11px; color: var(--text-light); margin-top: 2px; font-weight: 600; }
+.fc-badge { display: inline-block; padding: 3px 8px; border-radius: 50px; font-size: 10px; font-weight: 800; margin-top: 7px; }
+.fc-badge.green { background: var(--mint); color: var(--green-primary); }
+.fc-badge.peach { background: #FFE5E5; color: #E85D5D; }
+.fc-badge.sky { background: var(--sky); color: #2A8AB0; }
+.fc-badge.lav { background: var(--lavender); color: #5B4FBD; }
+
+/* Segment Cards */
+.segment-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.seg-card { background: var(--card-bg); border-radius: 18px; padding: 16px 12px; box-shadow: var(--shadow); cursor: pointer; transition: all 0.2s; text-align: center; }
+.seg-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,173,114,0.15); }
+.seg-card .seg-emoji { font-size: 36px; margin-bottom: 7px; }
+.seg-card h4 { font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 900; color: var(--text-dark); }
+.seg-card p { font-size: 11px; color: var(--text-light); margin-top: 3px; font-weight: 600; line-height: 1.4; }
+
+/* Driver Cards */
+.driver-card { min-width: 200px; background: var(--card-bg); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); flex-shrink: 0; cursor: pointer; transition: all 0.2s; }
+.driver-card:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,0,0,0.12); }
+.driver-avatar { width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, var(--green-light), var(--mint)); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 10px; border: 2px solid var(--border); }
+.driver-name { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: var(--text-dark); }
+.driver-meta { font-size: 11px; color: var(--text-light); font-weight: 600; margin-top: 2px; }
+.driver-rating { display: flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 12px; font-weight: 800; color: var(--text-mid); }
+.driver-stars { color: #FFB800; }
+.driver-badge { background: var(--mint); color: var(--green-primary); padding: 3px 8px; border-radius: 50px; font-size: 10px; font-weight: 800; margin-top: 6px; display: inline-block; }
+.driver-security { font-size: 10px; color: var(--text-light); font-weight: 600; margin-top: 4px; }
+
+/* Rewards strip */
+.rewards-strip { background: linear-gradient(135deg, var(--yellow-soft), var(--peach)); margin: 0 16px 4px; border-radius: 18px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; box-shadow: 0 4px 16px rgba(255,180,100,0.18); }
+.r-icon { font-size: 32px; }
+.rewards-strip h4 { font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 900; color: var(--text-dark); }
+.rewards-strip p { font-size: 11px; color: var(--text-mid); font-weight: 600; }
+.r-arrow { margin-left: auto; font-size: 20px; color: var(--text-light); }
+
+/* Lend/Borrow Items */
+.item-category { margin-bottom: 14px; }
+.item-cat-title { font-size: 13px; font-weight: 800; color: var(--text-mid); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+.item-list { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.item-list::-webkit-scrollbar { display: none; }
+.item-pill { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 50px; padding: 8px 14px; font-size: 12px; font-weight: 700; color: var(--text-mid); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 5px; }
+.item-pill:hover { border-color: var(--green-primary); color: var(--green-primary); background: var(--green-pale); }
+
+/* Bottom Nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(16px); border-top: 1.5px solid var(--green-pale); padding: 8px 4px 12px; display: flex; justify-content: space-around; }
+.bnav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 10px; border-radius: 14px; cursor: pointer; transition: all 0.2s; border: none; background: none; }
+.bnav-item.active { background: var(--green-pale); }
+.bn-icon { font-size: 22px; }
+.bn-label { font-size: 10px; font-weight: 800; color: var(--text-light); }
+.bnav-item.active .bn-label { color: var(--green-primary); }
+.sprite-float { position: fixed; bottom: 92px; right: 14px; font-size: 46px; opacity: 0.22; animation: floatDeco 4s ease-in-out infinite; pointer-events: none; z-index: 50; }
+
+/* ===================== MODALS ===================== */
+.modal-overlay { position: fixed; inset: 0; z-index: 300; background: var(--overlay); backdrop-filter: blur(6px); display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal-sheet { background: var(--card-bg); border-radius: 28px 28px 0 0; width: 100%; max-width: 480px; padding: 22px 22px 34px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); max-height: 90vh; overflow-y: auto; }
+.modal-overlay.open .modal-sheet { transform: translateY(0); }
+.modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
+.modal-title { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 900; color: var(--text-dark); margin-bottom: 14px; }
+.modal-option { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 14px; cursor: pointer; transition: background 0.2s; margin-bottom: 6px; }
+.modal-option:hover { background: var(--green-pale); }
+.mo-icon { font-size: 26px; }
+.modal-option h4 { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+.modal-option p { font-size: 11px; color: var(--text-light); font-weight: 600; }
+
+/* Follow / Service request */
+.user-request-card { background: var(--card-bg); border-radius: 18px; padding: 14px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.urq-avatar { width: 46px; height: 46px; border-radius: 50%; background: var(--mint); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.urq-info { flex: 1; }
+.urq-info h4 { font-size: 14px; font-weight: 800; color: var(--text-dark); }
+.urq-info p { font-size: 11px; color: var(--text-light); font-weight: 600; }
+.urq-btns { display: flex; gap: 6px; }
+.urq-btn { padding: 7px 12px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; }
+.urq-btn.accept { background: var(--green-primary); color: white; }
+.urq-btn.decline { background: var(--green-pale); color: var(--text-mid); }
+
+/* Profile Page */
+#profilePage { background: var(--bg); padding: 72px 0 90px; display: none; }
+#profilePage.active { display: block; animation: pageIn 0.4s ease; }
+.profile-hero { background: linear-gradient(135deg, var(--green-primary), var(--sage)); padding: 28px 20px 50px; position: relative; }
+.profile-hero .ph-name { font-family: 'Nunito', sans-serif; font-size: 22px; font-weight: 900; color: white; }
+.profile-hero .ph-email { font-size: 13px; color: rgba(255,255,255,0.82); font-weight: 600; }
+.profile-avatar-wrap { position: relative; display: inline-block; margin-bottom: 12px; }
+.profile-avatar-lg { width: 80px; height: 80px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 3px solid rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 36px; overflow: hidden; }
+.profile-avatar-lg img { width: 100%; height: 100%; object-fit: cover; }
+.pa-edit { position: absolute; bottom: 2px; right: 2px; width: 26px; height: 26px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.profile-card { background: var(--card-bg); border-radius: 20px; padding: 18px; margin: -28px 16px 12px; box-shadow: var(--shadow); position: relative; }
+.profile-section { background: var(--card-bg); border-radius: 18px; padding: 16px; margin: 0 16px 12px; }
+.ps-title { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.ps-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--green-pale); }
+.ps-row:last-child { border-bottom: none; padding-bottom: 0; }
+.ps-icon { font-size: 20px; width: 28px; }
+.ps-info { flex: 1; }
+.ps-info h5 { font-size: 13px; font-weight: 800; color: var(--text-dark); }
+.ps-info p { font-size: 11px; color: var(--text-light); font-weight: 600; }
+.ps-edit { font-size: 18px; cursor: pointer; color: var(--text-light); }
+.ps-edit:hover { color: var(--green-primary); }
+.status-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.status-pill { padding: 7px 14px; border-radius: 50px; font-size: 12px; font-weight: 800; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.status-pill.available { background: #E8FAF0; color: #2E9C5A; border-color: #A8D5B5; }
+.status-pill.unavailable { background: #FFE5E5; color: #E85D5D; border-color: #FFBDBD; }
+.status-pill.at-work { background: #FFF3E0; color: #E06C00; border-color: #FFCC80; }
+.status-pill.active-pill { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+.theme-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+.theme-swatch { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; }
+.theme-swatch.active { border-color: var(--text-dark); transform: scale(1.1); }
+.aadhaar-verified { display: inline-flex; align-items: center; gap: 5px; background: #E8FAF0; color: #2E9C5A; padding: 5px 12px; border-radius: 50px; font-size: 12px; font-weight: 800; }
+
+/* Settings page */
+#settingsPage { background: var(--bg); padding: 72px 0 90px; display: none; }
+#settingsPage.active { display: block; animation: pageIn 0.4s ease; }
+.settings-section { background: var(--card-bg); border-radius: 18px; padding: 14px; margin: 0 16px 12px; }
+.sett-title { font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 900; color: var(--text-dark); margin-bottom: 10px; }
+.sett-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--green-pale); }
+.sett-row:last-child { border-bottom: none; }
+.sett-icon { font-size: 20px; width: 28px; text-align: center; }
+.sett-label { flex: 1; font-size: 14px; font-weight: 700; color: var(--text-dark); }
+.sett-val { font-size: 12px; font-weight: 600; color: var(--text-light); }
+.toggle-switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; cursor: pointer; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch.on { background: var(--green-primary); }
+.toggle-knob { width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+.toggle-switch.on .toggle-knob { left: 23px; }
+.loc-input-wrap { position: relative; margin-bottom: 10px; }
+.loc-input { width: 100%; padding: 12px 40px 12px 14px; border: 2px solid var(--border); border-radius: 12px; font-family: 'Quicksand', sans-serif; font-size: 14px; font-weight: 600; background: var(--input-bg); color: var(--text-dark); outline: none; }
+.loc-input:focus { border-color: var(--green-primary); }
+.loc-detect-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; cursor: pointer; }
+.radius-btns { display: flex; gap: 8px; margin-bottom: 14px; }
+.radius-btn { flex: 1; padding: 9px; border: 2px solid var(--border); border-radius: 10px; background: var(--input-bg); font-family: 'Quicksand', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; color: var(--text-mid); }
+.radius-btn.active { border-color: var(--green-primary); background: var(--mint); color: var(--green-primary); }
+.contact-email { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--green-pale); }
+.contact-email:last-child { border-bottom: none; }
+.contact-email .ce-icon { font-size: 18px; }
+.contact-email a { font-size: 13px; font-weight: 700; color: var(--green-primary); text-decoration: none; }
+.contact-email a:hover { text-decoration: underline; }
+
+/* Toast */
+.toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--text-dark); color: white; padding: 11px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; z-index: 500; opacity: 0; pointer-events: none; transition: all 0.3s; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Elderly elder mode */
+#elderPage { background: var(--bg); padding: 72px 0 90px; display: none; }
+#elderPage.active { display: block; animation: pageIn 0.4s ease; }
+.elder-card { background: var(--card-bg); border-radius: 28px; padding: 24px 20px; margin: 12px 14px; box-shadow: var(--shadow); text-align: center; cursor: pointer; transition: all 0.22s; border: 3px solid var(--border); }
+.elder-card:hover { border-color: var(--green-primary); transform: scale(1.02); }
+.elder-icon { font-size: 64px; display: block; margin-bottom: 12px; }
+.elder-title { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: var(--text-dark); }
+.elder-desc { font-size: 16px; color: var(--text-mid); font-weight: 600; margin-top: 6px; line-height: 1.5; }
+.elder-emergency { background: linear-gradient(135deg, #E85D5D, #FF8C7A); border-radius: 28px; padding: 28px 20px; margin: 12px 14px; display: flex; align-items: center; gap: 16px; cursor: pointer; animation: emergPulse 3s ease-in-out infinite; border: none; width: calc(100% - 28px); }
+.elder-emergency-icon { font-size: 52px; }
+.elder-emergency h3 { font-family: 'Nunito', sans-serif; font-size: 24px; font-weight: 900; color: white; }
+.elder-emergency p { font-size: 15px; color: rgba(255,255,255,0.85); font-weight: 600; margin-top: 4px; }
+
+/* Profile theme options */
+.profile-theme-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.pt-option { border-radius: 14px; height: 50px; cursor: pointer; border: 3px solid transparent; transition: all 0.2s; position: relative; overflow: hidden; }
+.pt-option.active { border-color: var(--text-dark); box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+.pt-option .pt-check { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0; }
+.pt-option.active .pt-check { opacity: 1; }
+
+@media (max-width: 380px) {
+  .quick-actions { grid-template-columns: repeat(3,1fr); }
+  .auth-card { padding: 26px 18px 22px; }
+  .service-grid { gap: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== SPLASH ========== -->
+<div id="splash">
+  <div class="hands-row"><span class="hand-l">🖐</span><span class="hand-r">🖐</span></div>
+  <div class="splash-circle">🤝</div>
+  <div class="splash-logo-text">Near<span>Help</span></div>
+  <div class="splash-tagline">Your community, always nearby 🌿</div>
+</div>
+
+<!-- ========== AUTH PAGE ========== -->
+<div id="authPage" class="page">
+  <div class="ghibli-deco">🌿</div>
+  <div class="ghibli-deco">🐾</div>
+  <div class="ghibli-deco">🍃</div>
+  <div class="ghibli-deco">✨</div>
+  <div class="ghibli-deco">🌸</div>
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">Near<span>Help</span> 🤝</div>
+      <div class="auth-subtitle">Helping neighbors, building communities</div>
+    </div>
+    <div class="tab-row">
+      <button class="tab-btn active" onclick="switchAuthTab('signup', this)">Create Account</button>
+      <button class="tab-btn" onclick="switchAuthTab('signin', this)">Sign In</button>
+    </div>
+    <!-- Sign Up -->
+    <div id="signupForm">
+      <div class="input-group">
+        <label>👤 Full Name</label>
+        <input id="su-name" type="text" placeholder="Enter your full name">
+      </div>
+      <div class="input-group">
+        <label>📧 Email or Phone Number</label>
+        <input id="su-email" type="text" placeholder="you@email.com or +91 9876543210">
+      </div>
+      <div class="input-group">
+        <label>🔒 Password</label>
+        <input type="password" placeholder="Create a strong password">
+      </div>
+      <div class="input-group">
+        <label>🔒 Confirm Password</label>
+        <input type="password" placeholder="Re-enter your password">
+      </div>
+      <div class="input-group">
+        <label>🎂 Age Group</label>
+        <select id="su-age">
+          <option value="youth">Youth (13–25)</option>
+          <option value="adult">Adult (26–59)</option>
+          <option value="senior">Senior / Elderly (60+)</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>👤 I am a...</label>
+        <select id="su-role">
+          <option>General User</option>
+          <option>Student / Migrant</option>
+          <option>Service Provider / Volunteer</option>
+          <option>Elderly / Senior Citizen</option>
+        </select>
+      </div>
+      <div class="pref-section">
+        <h4>🏡 What do you need help with?</h4>
+        <div class="pref-chips">
+          <div class="pref-chip selected" onclick="toggleChip(this)">🛠️ Home Repair</div>
+          <div class="pref-chip" onclick="toggleChip(this)">🛒 Groceries</div>
+          <div class="pref-chip" onclick="toggleChip(this)">📦 Lending</div>
+          <div class="pref-chip" onclick="toggleChip(this)">🚗 Transport</div>
+          <div class="pref-chip" onclick="toggleChip(this)">📚 Tutoring</div>
+          <div class="pref-chip" onclick="toggleChip(this)">🏥 Medical</div>
+          <div class="pref-chip" onclick="toggleChip(this)">🐾 Pet Care</div>
+          <div class="pref-chip" onclick="toggleChip(this)">🧹 Cleaning</div>
+        </div>
+      </div>
+      <br>
+      <button class="btn-primary" onclick="doSignup()">🌿 Create My Account & Join</button>
+      <div class="divider">or</div>
+      <button class="btn-google" onclick="doSignup()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 35.5 26.9 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.5 5C9.7 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.9 36.2 44 30.6 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+    <!-- Sign In -->
+    <div id="signinForm" style="display:none;">
+      <div class="input-group">
+        <label>👤 Name</label>
+        <input id="si-name" type="text" placeholder="Enter your name">
+      </div>
+      <div class="input-group">
+        <label>📧 Email or Phone Number</label>
+        <input type="text" placeholder="you@email.com or +91 9876543210">
+      </div>
+      <div class="input-group">
+        <label>🔒 Password</label>
+        <input type="password" placeholder="Enter your password">
+      </div>
+      <div class="input-group">
+        <label>🎂 Age Group</label>
+        <select id="si-age">
+          <option value="youth">Youth (13–25)</option>
+          <option value="adult">Adult (26–59)</option>
+          <option value="senior">Senior / Elderly (60+)</option>
+        </select>
+      </div>
+      <div style="text-align:right; margin-bottom:14px;">
+        <a href="#" style="font-size:12px; color:var(--green-primary); font-weight:700; text-decoration:none;">Forgot Password?</a>
+      </div>
+      <button class="btn-primary" onclick="doSignin()">🌿 Sign In</button>
+      <div class="divider">or</div>
+      <button class="btn-google" onclick="doSignin()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.6 33.1 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 19.7-8 19.7-20 0-1.3-.1-2.7-.1-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 15.1 18.9 12 24 12c3 0 5.8 1.1 7.9 2.9l5.7-5.7C34.1 6.5 29.3 4 24 4 16.3 4 9.7 8.4 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.2-5.2C29.5 35.5 26.9 36 24 36c-5.2 0-9.6-2.9-11.3-7.1l-6.5 5C9.7 39.6 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.9 2.5-2.6 4.6-4.8 6l6.2 5.2C40.9 36.2 44 30.6 44 24c0-1.3-.1-2.7-.4-4z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SERVICE SELECTOR PAGE ========== -->
+<div id="servicePage" class="page">
+  <div style="background: linear-gradient(160deg, var(--green-pale) 0%, var(--sky) 100%); min-height:100vh; padding:60px 20px 40px; display:flex; align-items:center; justify-content:center;">
+    <div class="service-selector">
+      <div class="ss-header">
+        <div class="ss-greeting">Welcome, <span id="ss-username">Friend</span>! 👋</div>
+        <h2>What would you like to do?</h2>
+        <p>Choose to get started — you can always switch later</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-tile highlight" onclick="goToApp()">
+          <span class="st-icon">🏠</span>
+          <h3>Explore Home</h3>
+          <p>See all nearby services & lend items</p>
+        </div>
+        <div class="service-tile" onclick="openRequestModal(); goToApp();">
+          <span class="st-icon">🙋</span>
+          <h3>Request Help</h3>
+          <p>I need something from my neighbors</p>
+        </div>
+        <div class="service-tile" onclick="goToApp(); openOfferModal();">
+          <span class="st-icon">📦</span>
+          <h3>Lend an Item</h3>
+          <p>Share what you have with others</p>
+        </div>
+        <div class="service-tile" onclick="showToast('🤝 Offer skills coming up!'); goToApp();">
+          <span class="st-icon">🤝</span>
+          <h3>Offer Skills</h3>
+          <p>Help neighbors with what you know</p>
+        </div>
+        <div class="service-tile" onclick="goToApp(); setTimeout(()=>openElderMode(),400);">
+          <span class="st-icon">👴</span>
+          <h3>Elderly Mode</h3>
+          <p>Simple, big-button interface for seniors</p>
+        </div>
+        <div class="service-tile" onclick="showToast('🚗 Browsing drivers...'); goToApp();">
+          <span class="st-icon">🚗</span>
+          <h3>Find a Driver</h3>
+          <p>Safe, verified community drivers</p>
+        </div>
+      </div>
+      <div class="ss-skip" onclick="goToApp()">Skip → Go to Home</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN APP PAGE ========== -->
+<div id="appPage" class="page">
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-prof">
+        <div class="sidebar-avatar" id="sidebarAvatar">😊</div>
+        <div>
+          <div class="s-name" id="sidebarName">Friend</div>
+          <div class="s-user" id="sidebarEmail">nearhelp user</div>
+        </div>
+      </div>
+      <div class="s-badge">⭐ 4.8 &nbsp;|&nbsp; <span class="s-status available" id="sidebarStatusDot"></span><span id="sidebarStatusText">Available</span></div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-item" onclick="navTo('appPage'); closeSidebar();"><span class="si-icon">🏠</span> Home</div>
+      <div class="sidebar-item" onclick="navTo('settingsPage'); closeSidebar();"><span class="si-icon">⚙️</span> Settings</div>
+      <div class="sidebar-item" onclick="navTo('profilePage'); closeSidebar();"><span class="si-icon">👤</span> My Profile</div>
+      <div class="sidebar-item" onclick="showToast('🏆 340 NearPoints! Redeem for discounts.'); closeSidebar();"><span class="si-icon">🏆</span> Rewards & Discounts</div>
+      <div class="sidebar-item" onclick="showToast('🎨 Theme options in Profile → Profile Theme'); closeSidebar();"><span class="si-icon">🎨</span> App Theme</div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-item" onclick="showToast('📜 Terms & Conditions'); closeSidebar();"><span class="si-icon">📜</span> Terms & Conditions</div>
+      <div class="sidebar-item" onclick="showToast('ℹ️ NearHelp v1.0 – Community Lending App'); closeSidebar();"><span class="si-icon">ℹ️</span> About NearHelp</div>
+      <div class="sidebar-item" onclick="navTo('settingsPage'); closeSidebar(); setTimeout(()=>document.getElementById('contactSection').scrollIntoView({behavior:'smooth'}),400);"><span class="si-icon">📨</span> Contact Support</div>
+      <div class="sidebar-item" onclick="showToast('❓ Help Center coming soon!'); closeSidebar();"><span class="si-icon">❓</span> Help & FAQ</div>
+      <div class="sidebar-sep"></div>
+      <div class="sidebar-item" onclick="toggleTheme()"><span class="si-icon" id="themeIcon">🌙</span> <span id="themeLabel">Dark Mode</span></div>
+      <div class="sidebar-item" onclick="goToAuth()"><span class="si-icon">🚪</span> Sign Out</div>
+    </div>
+    <div style="text-align:center; padding:16px 0 8px; font-size:52px; opacity:0.12;">🌳</div>
+  </div>
+
+  <!-- Top Nav -->
+  <div class="top-nav">
+    <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
+    <div class="nav-logo">Near<span>Help</span></div>
+    <div class="nav-right">
+      <button class="nav-notif" onclick="showToast('🔔 3 new notifications')">🔔<span class="notif-dot"></span></button>
+      <div class="nav-avatar" id="navAvatar" onclick="navTo('profilePage')">😊</div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Trending Strip -->
+    <div class="trend-label">🔥 Trending Near You</div>
+    <div class="trending-strip">
+      <div class="trending-inner">
+        <div class="trend-chip" onclick="showToast('🔧 Plumber requests up 42%!')"><span class="tc-fire">🔧</span> Plumbing Help</div>
+        <div class="trend-chip" onclick="showToast('📚 Books most borrowed this week!')"><span class="tc-fire">📚</span> Book Lending</div>
+        <div class="trend-chip" onclick="showToast('🛒 Grocery delivery popular!')"><span class="tc-fire">🛒</span> Grocery Help</div>
+        <div class="trend-chip" onclick="showToast('🏥 Medical escort in demand!')"><span class="tc-fire">🏥</span> Medical Escort</div>
+        <div class="trend-chip" onclick="showToast('🧰 Drill most borrowed item!')"><span class="tc-fire">🧰</span> Power Drill</div>
+        <div class="trend-chip" onclick="showToast('📷 DSLR camera in demand!')"><span class="tc-fire">📷</span> Camera Rent</div>
+        <div class="trend-chip" onclick="showToast('🚗 Driver slots open today!')"><span class="tc-fire">🚗</span> Driver Avail.</div>
+        <div class="trend-chip" onclick="showToast('📡 Wi-Fi router lending!')"><span class="tc-fire">📡</span> Wi-Fi Router</div>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <div class="hero-banner">
+      <div class="hero-ghibli">🌿</div>
+      <h2>Good morning, <span id="heroName">Friend</span>! 👋<br>What do you need today?</h2>
+      <p>4 neighbors available nearby to help you</p>
+      <button class="hero-loc" onclick="openLocModal()">📍 <span id="heroLoc">Kakkanad, Kochi</span> ▼</button>
+    </div>
+
+    <!-- Trust Bar -->
+    <div class="trust-bar">
+      <div class="trust-stat"><div class="t-num">1,240</div><div class="t-lbl">Verified Users</div></div>
+      <div class="trust-stat"><div class="t-num">3,800+</div><div class="t-lbl">Helps Given</div></div>
+      <div class="trust-stat"><div class="t-num">4.9★</div><div class="t-lbl">Avg Rating</div></div>
+    </div>
+
+    <!-- Emergency -->
+    <button class="emergency-btn" onclick="showToast('🚨 Emergency alert sent to nearby volunteers!')">
+      <div class="emergency-icon">🆘</div>
+      <div class="emergency-text">
+        <h3>I Need Help Right Now!</h3>
+        <p>Instantly alert nearby volunteers & emergency contacts</p>
+      </div>
+    </button>
+
+    <!-- Quick Actions -->
+    <div class="section">
+      <div class="section-title">⚡ Quick Actions</div>
+      <div class="quick-actions">
+        <div class="qa-item" onclick="openRequestModal()"><span class="qa-icon">🛒</span><span class="qa-label">Borrow Item</span></div>
+        <div class="qa-item" onclick="openOfferModal()"><span class="qa-icon">📦</span><span class="qa-label">Lend Item</span></div>
+        <div class="qa-item" onclick="openRequestModal()"><span class="qa-icon">🤝</span><span class="qa-label">Get Help</span></div>
+        <div class="qa-item" onclick="openOfferModal()"><span class="qa-icon">🌟</span><span class="qa-label">Offer Help</span></div>
+        <div class="qa-item" onclick="showToast('💬 Your chats')"><span class="qa-icon">💬</span><span class="qa-label">Messages</span></div>
+        <div class="qa-item" onclick="showToast('🏆 340 NearPoints!')"><span class="qa-icon">🏆</span><span class="qa-label">Rewards</span></div>
+        <div class="qa-item" onclick="navTo('requestsPage')"><span class="qa-icon">📩</span><span class="qa-label">Requests</span></div>
+        <div class="qa-item" onclick="showToast('🗺️ Nearby neighbors map')"><span class="qa-icon">🗺️</span><span class="qa-label">Nearby</span></div>
+      </div>
+    </div>
+
+    <!-- Lifestyle Cards -->
+    <div class="section">
+      <div class="section-title">👨‍👩‍👧 Solutions for Your Lifestyle</div>
+      <div class="segment-cards">
+        <div class="seg-card" onclick="showToast('👨‍👩‍👧 Family features')"><div class="seg-emoji">👨‍👩‍👧</div><h4>Family Needs</h4><p>Borrow appliances, childcare, home repair</p></div>
+        <div class="seg-card" onclick="showToast('🎓 Student features')"><div class="seg-emoji">🎓</div><h4>Students</h4><p>Share books, local help, affordable services</p></div>
+        <div class="seg-card" onclick="openElderMode()"><div class="seg-emoji">👴</div><h4>Elderly Care</h4><p>Simple UI, medical & grocery help</p></div>
+        <div class="seg-card" onclick="showToast('🧳 Migrant support')"><div class="seg-emoji">🧳</div><h4>Migrants</h4><p>Settle in fast, local guidance, language</p></div>
+      </div>
+    </div>
+
+    <!-- Items to Borrow/Lend -->
+    <div class="section">
+      <div class="section-title">📦 Items Available Near You</div>
+      <div class="item-category">
+        <div class="item-cat-title">📚 Books</div>
+        <div class="item-list">
+          <div class="item-pill" onclick="showToast('📗 NCERT Science requested!')">📗 NCERT Science</div>
+          <div class="item-pill" onclick="showToast('📘 JEE Prep books requested!')">📘 JEE Prep Set</div>
+          <div class="item-pill" onclick="showToast('📙 Malayalam novels requested!')">📙 Malayalam Novels</div>
+          <div class="item-pill" onclick="showToast('📕 Cookbook requested!')">📕 Cookbook</div>
+          <div class="item-pill" onclick="showToast('📓 Storybooks requested!')">📓 Children Stories</div>
+        </div>
+      </div>
+      <div class="item-category">
+        <div class="item-cat-title">⚡ Electrical Appliances</div>
+        <div class="item-list">
+          <div class="item-pill" onclick="showToast('🌀 Mixer Grinder requested!')">🌀 Mixer Grinder</div>
+          <div class="item-pill" onclick="showToast('🔌 Extension Board requested!')">🔌 Extension Board</div>
+          <div class="item-pill" onclick="showToast('💨 Table Fan requested!')">💨 Table Fan</div>
+          <div class="item-pill" onclick="showToast('🔆 LED Lamp requested!')">🔆 LED Lamp</div>
+          <div class="item-pill" onclick="showToast('🎛️ Induction Cooker requested!')">🎛️ Induction Cooker</div>
+          <div class="item-pill" onclick="showToast('📺 Projector requested!')">📺 Projector</div>
+        </div>
+      </div>
+      <div class="item-category">
+        <div class="item-cat-title">🧰 Utilities & Tools</div>
+        <div class="item-list">
+          <div class="item-pill" onclick="showToast('🪛 Power Drill requested!')">🪛 Power Drill</div>
+          <div class="item-pill" onclick="showToast('🔨 Toolbox requested!')">🔨 Toolbox</div>
+          <div class="item-pill" onclick="showToast('🚲 Bicycle requested!')">🚲 Bicycle</div>
+          <div class="item-pill" onclick="showToast('📷 DSLR Camera requested!')">📷 DSLR Camera</div>
+          <div class="item-pill" onclick="showToast('⛺ Tent requested!')">⛺ Camping Tent</div>
+          <div class="item-pill" onclick="showToast('🧹 Vacuum Cleaner requested!')">🧹 Vacuum Cleaner</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="section">
+      <div class="section-title">🌟 Services Near You</div>
+      <div class="cards-row">
+        <div class="feature-card green" onclick="showToast('🛠️ Home Repair services')"><div class="fc-icon">🔧</div><div class="fc-title">Home Repair</div><div class="fc-sub">Plumbing, electrical & more</div><div class="fc-badge green">8 helpers near you</div></div>
+        <div class="feature-card sky" onclick="showToast('🏥 Medical support')"><div class="fc-icon">🏥</div><div class="fc-title">Medical Support</div><div class="fc-sub">Escort, medicine pickup</div><div class="fc-badge sky">Priority for elderly</div></div>
+        <div class="feature-card lav" onclick="showToast('📚 Tutoring services')"><div class="fc-icon">📚</div><div class="fc-title">Tutoring</div><div class="fc-sub">Maths, Science, Language</div><div class="fc-badge lav">5 tutors nearby</div></div>
+        <div class="feature-card peach" onclick="showToast('🧹 Cleaning services')"><div class="fc-icon">🧹</div><div class="fc-title">Home Cleaning</div><div class="fc-sub">Deep clean, regular maid</div><div class="fc-badge peach">3 available today</div></div>
+      </div>
+    </div>
+
+    <!-- Drivers -->
+    <div class="section">
+      <div class="section-title">🚗 Available Drivers Near You</div>
+      <div class="cards-row">
+        <div class="driver-card">
+          <div class="driver-avatar">👨</div>
+          <div class="driver-name">Rajan K.</div>
+          <div class="driver-meta">🚕 Auto + Car • 8 yrs exp.</div>
+          <div class="driver-rating"><span class="driver-stars">★★★★★</span> 4.9 (142 trips)</div>
+          <div class="driver-badge">✅ Police Verified</div>
+          <div class="driver-security">Aadhaar linked • Background checked</div>
+        </div>
+        <div class="driver-card">
+          <div class="driver-avatar">👩</div>
+          <div class="driver-name">Sreelatha M.</div>
+          <div class="driver-meta">🚗 Car • 5 yrs exp.</div>
+          <div class="driver-rating"><span class="driver-stars">★★★★★</span> 4.8 (98 trips)</div>
+          <div class="driver-badge">✅ Women Driver</div>
+          <div class="driver-security">Aadhaar linked • Background checked</div>
+        </div>
+        <div class="driver-card">
+          <div class="driver-avatar">🧔</div>
+          <div class="driver-name">Anoop V.</div>
+          <div class="driver-meta">🛵 Bike • 3 yrs exp.</div>
+          <div class="driver-rating"><span class="driver-stars">★★★★</span> 4.5 (61 trips)</div>
+          <div class="driver-badge">✅ Community Verified</div>
+          <div class="driver-security">Aadhaar linked • Locally trusted</div>
+        </div>
+        <div class="driver-card">
+          <div class="driver-avatar">👴</div>
+          <div class="driver-name">Thomas J.</div>
+          <div class="driver-meta">🚌 Van • 15 yrs exp.</div>
+          <div class="driver-rating"><span class="driver-stars">★★★★★</span> 5.0 (310 trips)</div>
+          <div class="driver-badge">✅ Senior Specialist</div>
+          <div class="driver-security">Aadhaar linked • Hospital route expert</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rewards Strip -->
+    <div class="rewards-strip" onclick="showToast('🏆 340 NearPoints! 5 more services = 15% discount 🎉')">
+      <div class="r-icon">🏆</div>
+      <div><h4>You have 340 NearPoints!</h4><p>Use 5 more services to unlock 15% discount 🎉</p></div>
+      <div class="r-arrow">›</div>
+    </div>
+
+    <div class="section">
+      <div style="background: linear-gradient(135deg, var(--lavender), var(--sky)); border-radius: 20px; padding: 18px;">
+        <div style="font-size:26px; margin-bottom:7px;">💳</div>
+        <h4 style="font-family:'Nunito',sans-serif; font-size:15px; font-weight:900; color:var(--text-dark); margin-bottom:5px;">Earn While You Help!</h4>
+        <p style="font-size:12px; color:var(--text-mid); font-weight:600; line-height:1.6;">Service providers earn directly. Regular users get <strong>loyalty discounts up to 20%</strong> — every transaction rewards both parties. 🌿</p>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav">
+    <button class="bnav-item active" onclick="navTo('appPage'); setActiveNav(this)"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></button>
+    <button class="bnav-item" onclick="navTo('requestsPage'); setActiveNav(this)"><span class="bn-icon">📩</span><span class="bn-label">Requests</span></button>
+    <button class="bnav-item" onclick="openOfferModal()"><span class="bn-icon">📦</span><span class="bn-label">Lend</span></button>
+    <button class="bnav-item" onclick="openRequestModal()"><span class="bn-icon">🤝</span><span class="bn-label">Help</span></button>
+    <button class="bnav-item" onclick="navTo('profilePage'); setActiveNav(this)"><span class="bn-icon">👤</span><span class="bn-label">Profile</span></button>
+  </div>
+  <div class="sprite-float">🌿</div>
+</div>
+
+<!-- ========== REQUESTS PAGE ========== -->
+<div id="requestsPage" class="page">
+  <div class="top-nav">
+    <button class="hamburger" onclick="navTo('appPage')"><span style="font-size:20px;">←</span></button>
+    <div class="nav-logo">Requests</div>
+    <div class="nav-right"><div class="nav-avatar" id="reqPageAvatar" onclick="navTo('profilePage')">😊</div></div>
+  </div>
+  <div class="main-content">
+    <!-- Trending -->
+    <div class="trend-label">🔥 Trending Requests</div>
+    <div class="trending-strip">
+      <div class="trending-inner">
+        <div class="trend-chip">🛒 Grocery runs</div>
+        <div class="trend-chip">🔧 Plumbing fix</div>
+        <div class="trend-chip">📚 Book swap</div>
+        <div class="trend-chip">🏥 Hospital escort</div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">📩 Incoming Follow Requests</div>
+      <div class="user-request-card">
+        <div class="urq-avatar">🧑</div>
+        <div class="urq-info"><h4>Meena S.</h4><p>Wants to follow your availability</p></div>
+        <div class="urq-btns">
+          <button class="urq-btn accept" onclick="showToast('✅ Meena S. approved!')">Accept</button>
+          <button class="urq-btn decline" onclick="showToast('❌ Declined')">Decline</button>
+        </div>
+      </div>
+      <div class="user-request-card">
+        <div class="urq-avatar">👨</div>
+        <div class="urq-info"><h4>Ajith R.</h4><p>Wants to connect for tutoring service</p></div>
+        <div class="urq-btns">
+          <button class="urq-btn accept" onclick="showToast('✅ Ajith R. approved!')">Accept</button>
+          <button class="urq-btn decline" onclick="showToast('❌ Declined')">Decline</button>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">🤝 Service Availability Requests</div>
+      <div class="user-request-card">
+        <div class="urq-avatar">👩</div>
+        <div class="urq-info"><h4>Priya N.</h4><p>Requesting: Grocery help — Sat 10 AM</p></div>
+        <div class="urq-btns">
+          <button class="urq-btn accept" onclick="showToast('✅ Service request accepted!')">Accept</button>
+          <button class="urq-btn decline" onclick="showToast('❌ Declined')">Decline</button>
+        </div>
+      </div>
+      <div class="user-request-card">
+        <div class="urq-avatar">🧔</div>
+        <div class="urq-info"><h4>Vineeth M.</h4><p>Requesting: Borrow your power drill</p></div>
+        <div class="urq-btns">
+          <button class="urq-btn accept" onclick="showToast('✅ Drill lending approved!')">Accept</button>
+          <button class="urq-btn decline" onclick="showToast('❌ Declined')">Decline</button>
+        </div>
+      </div>
+      <div class="user-request-card">
+        <div class="urq-avatar">👵</div>
+        <div class="urq-info"><h4>Kamala A. (Elderly)</h4><p>Requesting: Hospital visit escort — Mon</p></div>
+        <div class="urq-btns">
+          <button class="urq-btn accept" onclick="showToast('✅ Hospital escort confirmed!')">Accept</button>
+          <button class="urq-btn decline" onclick="showToast('❌ Declined')">Decline</button>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">📤 My Outgoing Requests</div>
+      <div style="background:var(--card-bg); border-radius:18px; padding:16px; box-shadow:var(--shadow);">
+        <div style="display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--green-pale);">
+          <span style="font-size:22px;">📦</span>
+          <div style="flex:1;"><h4 style="font-size:13px; font-weight:800; color:var(--text-dark);">Borrow: DSLR Camera</h4><p style="font-size:11px; color:var(--text-light); font-weight:600;">From Suresh K. • Pending</p></div>
+          <span style="font-size:11px; font-weight:800; color:orange;">⏳ Pending</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; padding:10px 0;">
+          <span style="font-size:22px;">🛒</span>
+          <div style="flex:1;"><h4 style="font-size:13px; font-weight:800; color:var(--text-dark);">Grocery Help — Tomorrow</h4><p style="font-size:11px; color:var(--text-light); font-weight:600;">From Anitha M. • Accepted</p></div>
+          <span style="font-size:11px; font-weight:800; color:var(--green-primary);">✅ Done</span>
+        </div>
+      </div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="bnav-item" onclick="navTo('appPage'); setActiveNav(this)"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></button>
+    <button class="bnav-item active"><span class="bn-icon">📩</span><span class="bn-label">Requests</span></button>
+    <button class="bnav-item" onclick="openOfferModal()"><span class="bn-icon">📦</span><span class="bn-label">Lend</span></button>
+    <button class="bnav-item" onclick="openRequestModal()"><span class="bn-icon">🤝</span><span class="bn-label">Help</span></button>
+    <button class="bnav-item" onclick="navTo('profilePage'); setActiveNav(this)"><span class="bn-icon">👤</span><span class="bn-label">Profile</span></button>
+  </div>
+</div>
+
+<!-- ========== PROFILE PAGE ========== -->
+<div id="profilePage">
+  <div class="top-nav">
+    <button class="hamburger" onclick="navTo('appPage')"><span style="font-size:20px;">←</span></button>
+    <div class="nav-logo">My Profile</div>
+    <div class="nav-right"><button class="btn-primary" style="width:auto;padding:8px 16px;font-size:13px;" onclick="showToast('✅ Profile saved!')">Save</button></div>
+  </div>
+  <div style="padding:72px 0 90px; background:var(--bg);">
+    <!-- Profile Hero -->
+    <div class="profile-hero">
+      <div class="profile-avatar-wrap">
+        <div class="profile-avatar-lg" id="profileAvatarLg">😊</div>
+        <div class="pa-edit" onclick="changePfp()">✏️</div>
+      </div>
+      <div class="ph-name" id="profileName">Friend</div>
+      <div class="ph-email">📧 <span id="profileEmail">user@nearhelp.in</span></div>
+    </div>
+
+    <!-- Bio Card -->
+    <div class="profile-card">
+      <div style="font-size:12px; font-weight:800; color:var(--text-mid); margin-bottom:6px;">✍️ Bio</div>
+      <textarea id="userBio" rows="2" style="width:100%; background:transparent; border:none; font-family:'Quicksand',sans-serif; font-size:13px; font-weight:600; color:var(--text-dark); resize:none; outline:none;" placeholder="Tell your neighbors about yourself...">Friendly neighbor in Kakkanad. Love helping out! 🌿</textarea>
+      <div style="margin-top:10px; font-size:12px; font-weight:800; color:var(--text-mid); margin-bottom:6px;">🏷️ Interests</div>
+      <div class="pref-chips">
+        <div class="pref-chip selected" onclick="toggleChip(this)">📚 Reading</div>
+        <div class="pref-chip selected" onclick="toggleChip(this)">🌱 Gardening</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🍳 Cooking</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🎵 Music</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🏃 Running</div>
+        <div class="pref-chip" onclick="toggleChip(this)">💻 Tech</div>
+      </div>
+    </div>
+
+    <!-- Activity Status -->
+    <div class="profile-section">
+      <div class="ps-title">🟢 Activity Status</div>
+      <div class="status-pills">
+        <div class="status-pill available active-pill" onclick="setStatus('available', this)">🟢 Available</div>
+        <div class="status-pill unavailable" onclick="setStatus('unavailable', this)">🔴 Unavailable</div>
+        <div class="status-pill at-work" onclick="setStatus('at-work', this)">🟡 At Work</div>
+      </div>
+    </div>
+
+    <!-- Profile Theme -->
+    <div class="profile-section">
+      <div class="ps-title">🎨 Profile Theme</div>
+      <div class="profile-theme-grid">
+        <div class="pt-option active" style="background:linear-gradient(135deg,#5BAD72,#87BEAA);" onclick="setProfileTheme(this, 'green')" title="Forest Green"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#FFD9C4,#FFB89A);" onclick="setProfileTheme(this, 'peach')" title="Peach"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#C5E8F5,#87CDEF);" onclick="setProfileTheme(this, 'sky')" title="Sky Blue"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#D9D4F0,#B8B0E8);" onclick="setProfileTheme(this, 'lavender')" title="Lavender"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#FFF3C4,#FFE04A);" onclick="setProfileTheme(this, 'yellow')" title="Sunny Yellow"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#2C3E2D,#1A2420);" onclick="setProfileTheme(this, 'dark')" title="Dark Forest"><div class="pt-check" style="color:white;">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#FFB7C5,#FF8FA3);" onclick="setProfileTheme(this, 'rose')" title="Rose"><div class="pt-check">✓</div></div>
+        <div class="pt-option" style="background:linear-gradient(135deg,#C8EDD6,#A0D9B5);" onclick="setProfileTheme(this, 'mint')" title="Mint"><div class="pt-check">✓</div></div>
+      </div>
+      <div style="margin-top:12px; font-size:12px; color:var(--text-light); font-weight:600;">Light / Dark Mode: <span onclick="toggleTheme()" style="color:var(--green-primary); cursor:pointer; font-weight:800;" id="profileThemeToggleLabel">Switch to Dark</span></div>
+    </div>
+
+    <!-- Skills & Services -->
+    <div class="profile-section">
+      <div class="ps-title">🌟 Skills & Services I Offer</div>
+      <div class="pref-chips" style="margin-bottom:10px;">
+        <div class="pref-chip selected" onclick="toggleChip(this)">🔧 Plumbing</div>
+        <div class="pref-chip selected" onclick="toggleChip(this)">📚 Tutoring</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🚗 Driving</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🍳 Cooking</div>
+        <div class="pref-chip" onclick="toggleChip(this)">💻 Tech Help</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🧹 Cleaning</div>
+        <div class="pref-chip" onclick="toggleChip(this)">🌱 Gardening</div>
+      </div>
+    </div>
+
+    <!-- Personal Details -->
+    <div class="profile-section">
+      <div class="ps-title">📋 Personal Details</div>
+      <div class="input-group"><label>📞 Phone Number</label><input type="tel" placeholder="+91 9876543210" value="+91 9876543210"></div>
+      <div class="input-group"><label>🏠 Address</label><input type="text" placeholder="House No, Street, Locality" value="42, Palarivattom Road, Kakkanad"></div>
+      <div class="input-group"><label>📮 Pincode</label><input type="text" placeholder="682021" value="682021" maxlength="6"></div>
+      <div class="input-group"><label>🏙️ City / District</label><input type="text" placeholder="Kochi, Ernakulam" value="Kochi, Ernakulam"></div>
+    </div>
+
+    <!-- Aadhaar Auth -->
+    <div class="profile-section">
+      <div class="ps-title">🪪 Identity Verification</div>
+      <div style="background:var(--green-pale); border-radius:14px; padding:14px; margin-bottom:12px;">
+        <div style="font-size:12px; font-weight:700; color:var(--text-mid); margin-bottom:8px;">Aadhaar Card Authentication</div>
+        <div class="input-group"><label>Aadhaar Number</label><input type="text" placeholder="XXXX XXXX XXXX" maxlength="14"></div>
+        <button class="btn-primary" style="margin-top:6px;" onclick="showToast('📲 OTP sent to Aadhaar-linked mobile!')">Verify with OTP →</button>
+      </div>
+      <div class="aadhaar-verified">✅ Police-style background check pending</div>
+    </div>
+
+    <div style="height:16px;"></div>
+  </div>
+  <div class="bottom-nav">
+    <button class="bnav-item" onclick="navTo('appPage')"><span class="bn-icon">🏠</span><span class="bn-label">Home</span></button>
+    <button class="bnav-item" onclick="navTo('requestsPage')"><span class="bn-icon">📩</span><span class="bn-label">Requests</span></button>
+    <button class="bnav-item" onclick="openOfferModal()"><span class="bn-icon">📦</span><span class="bn-label">Lend</span></button>
+    <button class="bnav-item" onclick="openRequestModal()"><span class="bn-icon">🤝</span><span class="bn-label">Help</span></button>
+    <button class="bnav-item active"><span class="bn-icon">👤</span><span class="bn-label">Profile</span></button>
+  </div>
+</div>
+
+<!-- ========== SETTINGS PAGE ========== -->
+<div id="settingsPage">
+  <div class="top-nav">
+    <button class="hamburger" onclick="navTo('appPage')"><span style="font-size:20px;">←</span></button>
+    <div class="nav-logo">Settings</div>
+    <div class="nav-right"></div>
+  </div>
+  <div style="padding:72px 0 40px; background:var(--bg);">
+    <div style="padding:12px 16px 0; font-family:'Nunito',sans-serif; font-size:22px; font-weight:900; color:var(--text-dark);">⚙️ Settings</div>
+
+    <!-- Location -->
+    <div class="settings-section" style="margin-top:14px;">
+      <div class="sett-title">📍 Location</div>
+      <div class="loc-input-wrap">
+        <input class="loc-input" id="settLocInput" placeholder="Type your area, locality..." value="Kakkanad, Kochi, Kerala">
+        <button class="loc-detect-btn" onclick="detectLocation()" title="Auto-detect location">📡</button>
+      </div>
+      <div style="font-size:12px; font-weight:800; color:var(--text-mid); margin-bottom:8px;">📡 Search Radius</div>
+      <div class="radius-btns">
+        <button class="radius-btn active" onclick="selectRadius(this)">1 km</button>
+        <button class="radius-btn" onclick="selectRadius(this)">2 km</button>
+        <button class="radius-btn" onclick="selectRadius(this)">3 km</button>
+        <button class="radius-btn" onclick="selectRadius(this)">Custom</button>
+      </div>
+      <div class="sett-row">
+        <span class="sett-icon">🎯</span><span class="sett-label">Precise Location Detection</span>
+        <div class="toggle-switch on" onclick="toggleSwitch(this)" id="preciseLocToggle"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="sett-row">
+        <span class="sett-icon">📍</span><span class="sett-label">Show My Approximate Location</span>
+        <div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+      </div>
+      <button class="btn-primary" style="margin-top:10px;" onclick="saveLocation()">Save Location Settings</button>
+    </div>
+
+    <!-- Appearance -->
+    <div class="settings-section">
+      <div class="sett-title">🎨 Appearance</div>
+      <div class="sett-row">
+        <span class="sett-icon" id="themeIcon2">🌙</span>
+        <span class="sett-label" id="themeLabel2">Dark Mode</span>
+        <div class="toggle-switch" onclick="toggleTheme(); toggleSwitch(this);" id="themeToggle"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="sett-row">
+        <span class="sett-icon">👴</span>
+        <span class="sett-label">Elderly / Simple Mode</span>
+        <div class="toggle-switch" onclick="toggleElderly(this)" id="elderlyToggle"><div class="toggle-knob"></div></div>
+      </div>
+      <div class="sett-row">
+        <span class="sett-icon">🔤</span>
+        <span class="sett-label">Language</span>
+        <span class="sett-val">English</span>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="settings-section">
+      <div class="sett-title">🔔 Notifications</div>
+      <div class="sett-row"><span class="sett-icon">📩</span><span class="sett-label">Help Requests</span><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+      <div class="sett-row"><span class="sett-icon">🆘</span><span class="sett-label">Emergency Alerts</span><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+      <div class="sett-row"><span class="sett-icon">💬</span><span class="sett-label">Chat Messages</span><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+      <div class="sett-row"><span class="sett-icon">🏆</span><span class="sett-label">Rewards & Points</span><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+    </div>
+
+    <!-- Privacy -->
+    <div class="settings-section">
+      <div class="sett-title">🔒 Privacy & Security</div>
+      <div class="sett-row"><span class="sett-icon">👁️</span><span class="sett-label">Show Activity Status</span><div class="toggle-switch on" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+      <div class="sett-row"><span class="sett-icon">🛡️</span><span class="sett-label">Two-Factor Authentication</span><div class="toggle-switch" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div></div>
+      <div class="sett-row"><span class="sett-icon">📵</span><span class="sett-label">Blocked Users</span><span class="sett-val">0 users →</span></div>
+    </div>
+
+    <!-- Contact Support -->
+    <div class="settings-section" id="contactSection">
+      <div class="sett-title">📨 Contact Support</div>
+      <p style="font-size:12px; color:var(--text-light); font-weight:600; margin-bottom:12px;">Reach out to our team for any help, bug reports, or feedback.</p>
+      <div class="contact-email"><span class="ce-icon">📧</span><a href="mailto:anuannbiju06@gmail.com">anuannbiju06@gmail.com</a></div>
+      <div class="contact-email"><span class="ce-icon">📧</span><a href="mailto:adheenasnair002@gmail.com">adheenasnair002@gmail.com</a></div>
+      <div style="margin-top:12px;"><button class="btn-primary" style="font-size:13px;" onclick="showToast('📧 Email app opened!')"><a href="mailto:anuannbiju06@gmail.com" style="color:white; text-decoration:none;">📬 Send us an Email</a></button></div>
+    </div>
+
+    <div style="height:30px;"></div>
+  </div>
+</div>
+
+<!-- ========== ELDERLY MODE PAGE ========== -->
+<div id="elderPage">
+  <div class="top-nav">
+    <button class="hamburger" onclick="navTo('appPage')"><span style="font-size:22px;">←</span></button>
+    <div class="nav-logo" style="font-size:26px;">NearHelp</div>
+    <div class="nav-right"></div>
+  </div>
+  <div style="padding:78px 0 20px; background:var(--bg);">
+    <div style="text-align:center; padding:16px; font-family:'Nunito',sans-serif; font-size:28px; font-weight:900; color:var(--text-dark);">Hello! 👋 How can we help you?</div>
+    <button class="elder-emergency" onclick="showToast('🚨 Emergency alert sent! Volunteers notified.')">
+      <div class="elder-emergency-icon">🆘</div>
+      <div><h3>I Need Help NOW!</h3><p>Press to alert nearby volunteers and family</p></div>
+    </button>
+    <div class="elder-card" onclick="showToast('🛒 Grocery helper request sent!')">
+      <span class="elder-icon">🛒</span>
+      <div class="elder-title">I Need Groceries</div>
+      <div class="elder-desc">Someone will come and help you with your grocery shopping</div>
+    </div>
+    <div class="elder-card" onclick="showToast('🏥 Medical escort request sent!')">
+      <span class="elder-icon">🏥</span>
+      <div class="elder-title">Take Me to Hospital</div>
+      <div class="elder-desc">A trusted neighbor will escort you to your doctor</div>
+    </div>
+    <div class="elder-card" onclick="showToast('💬 Chat opened!')">
+      <span class="elder-icon">💬</span>
+      <div class="elder-title">I Want to Talk</div>
+      <div class="elder-desc">Connect with a friendly neighbor for a conversation</div>
+    </div>
+    <div class="elder-card" onclick="showToast('🔧 Home repair help sent!')">
+      <span class="elder-icon">🔧</span>
+      <div class="elder-title">Fix Something at Home</div>
+      <div class="elder-desc">Get a skilled helper to fix things at your home</div>
+    </div>
+    <div style="text-align:center; padding:16px; font-size:16px; color:var(--text-light); font-weight:700; cursor:pointer;" onclick="navTo('appPage')">← Back to Full App</div>
+  </div>
+</div>
+
+<!-- ========== MODALS ========== -->
+<!-- Request Modal -->
+<div class="modal-overlay" id="requestModal" onclick="closeModals(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🙋 What do you need?</div>
+    <div class="modal-option" onclick="showToast('🛒 Grocery help requested!')"><div class="mo-icon">🛒</div><div><h4>Grocery Help</h4><p>Someone to fetch your groceries nearby</p></div></div>
+    <div class="modal-option" onclick="showToast('🏥 Medical help requested!')"><div class="mo-icon">🏥</div><div><h4>Medical Visit Help</h4><p>Accompany to hospital or pickup medicines</p></div></div>
+    <div class="modal-option" onclick="showToast('🔧 Home repair requested!')"><div class="mo-icon">🔧</div><div><h4>Home Repair</h4><p>Plumbing, electrical, carpentry</p></div></div>
+    <div class="modal-option" onclick="showToast('📦 Borrow item request sent!')"><div class="mo-icon">📦</div><div><h4>Borrow an Item</h4><p>Tools, appliances, books & more</p></div></div>
+    <div class="modal-option" onclick="showToast('🚗 Ride request sent!')"><div class="mo-icon">🚗</div><div><h4>Transport Help</h4><p>Drop or pick-up from nearby locations</p></div></div>
+    <div class="modal-option" onclick="showToast('👤 Follow request sent!')"><div class="mo-icon">👥</div><div><h4>Follow a Neighbor</h4><p>Request to see their availability & services</p></div></div>
+    <div class="modal-option" onclick="showToast('✏️ Custom request sent!')"><div class="mo-icon">✏️</div><div><h4>Other / Custom</h4><p>Describe your specific need</p></div></div>
+  </div>
+</div>
+
+<!-- Offer Modal -->
+<div class="modal-overlay" id="offerModal" onclick="closeModals(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📦 What can you offer?</div>
+    <div class="modal-option" onclick="showToast('📚 Book listed for lending!')"><div class="mo-icon">📚</div><div><h4>Lend a Book</h4><p>Textbooks, novels, study material</p></div></div>
+    <div class="modal-option" onclick="showToast('⚡ Appliance listed for lending!')"><div class="mo-icon">⚡</div><div><h4>Lend an Appliance</h4><p>Mixer, fan, induction cooker, lamp...</p></div></div>
+    <div class="modal-option" onclick="showToast('🧰 Utility listed for lending!')"><div class="mo-icon">🧰</div><div><h4>Lend a Tool / Utility</h4><p>Drill, camera, bicycle, tent...</p></div></div>
+    <div class="modal-option" onclick="showToast('🔧 Skill offer posted!')"><div class="mo-icon">🔧</div><div><h4>Offer a Skill</h4><p>Plumbing, tutoring, cooking, coding...</p></div></div>
+    <div class="modal-option" onclick="showToast('🤝 Volunteering posted!')"><div class="mo-icon">🤝</div><div><h4>Volunteer Help</h4><p>Offer free assistance to those in need</p></div></div>
+    <div class="modal-option" onclick="showToast('🚗 Driving offer posted!')"><div class="mo-icon">🚗</div><div><h4>Offer a Ride</h4><p>Hospital, airport, markets nearby</p></div></div>
+  </div>
+</div>
+
+<!-- Location Modal -->
+<div class="modal-overlay" id="locModal" onclick="closeModals(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">📍 Location & Preferences</div>
+    <div class="loc-input-wrap">
+      <input class="loc-input" id="modalLocInput" placeholder="Type your area or locality..." value="Kakkanad, Kochi">
+      <button class="loc-detect-btn" onclick="detectLocation()" title="Auto-detect">📡</button>
+    </div>
+    <div style="font-size:12px; font-weight:800; color:var(--text-mid); margin-bottom:8px;">📡 Search Radius</div>
+    <div class="radius-btns">
+      <button class="radius-btn active" onclick="selectRadius(this)">1 km</button>
+      <button class="radius-btn" onclick="selectRadius(this)">2 km</button>
+      <button class="radius-btn" onclick="selectRadius(this)">3 km</button>
+      <button class="radius-btn" onclick="selectRadius(this)">Custom</button>
+    </div>
+    <div style="font-size:12px; font-weight:800; color:var(--text-mid); margin-bottom:8px;">🏷️ Preferred Categories</div>
+    <div class="pref-chips" style="margin-bottom:18px;">
+      <div class="pref-chip selected" onclick="toggleChip(this)">🛒 Groceries</div>
+      <div class="pref-chip selected" onclick="toggleChip(this)">🔧 Repair</div>
+      <div class="pref-chip" onclick="toggleChip(this)">📚 Books</div>
+      <div class="pref-chip" onclick="toggleChip(this)">🚗 Transport</div>
+      <div class="pref-chip" onclick="toggleChip(this)">🏥 Medical</div>
+    </div>
+    <button class="btn-primary" onclick="saveLocation()">Save Location</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Profile Picture Modal -->
+<div class="modal-overlay" id="pfpModal" onclick="closeModals(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🖼️ Choose Profile Picture</div>
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:16px;">
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('😊')">😊</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('👨')">👨</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('👩')">👩</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('🧔')">🧔</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('👴')">👴</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('👵')">👵</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('🧑')">🧑</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('👧')">👧</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('🦸')">🦸</div>
+      <div style="font-size:42px; text-align:center; cursor:pointer; background:var(--green-pale); border-radius:14px; padding:10px;" onclick="setPfp('🧙')">🧙</div>
+    </div>
+    <button class="btn-primary" onclick="showToast('📸 Upload photo coming soon!'); closeAllModals();">📷 Upload from Device</button>
+  </div>
+</div>
+
+<script>
+// ===================== STATE =====================
+const appState = {
+  username: 'Friend',
+  pfp: '😊',
+  theme: 'light',
+  elderly: false,
+  status: 'available',
+  location: 'Kakkanad, Kochi',
+  profileTheme: 'green'
+};
+
+// ===================== SPLASH =====================
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('hidden');
+    setTimeout(() => showPage('authPage'), 400);
+  }, 2600);
+});
+
+// ===================== PAGE NAV =====================
+const allPages = ['authPage','servicePage','appPage','requestsPage','profilePage','settingsPage','elderPage'];
+
+function showPage(id) {
+  allPages.forEach(p => {
+    const el = document.getElementById(p);
+    if (!el) return;
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  const target = document.getElementById(id);
+  if (target) {
+    target.style.display = 'block';
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+}
+
+function navTo(id) {
+  showPage(id);
+}
+
+// ===================== AUTH =====================
+function switchAuthTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('signinForm').style.display = tab === 'signin' ? 'block' : 'none';
+}
+
+function doSignup() {
+  const name = document.getElementById('su-name').value.trim() || 'Friend';
+  const age = document.getElementById('su-age').value;
+  appState.username = name;
+  appState.ageGroup = age;
+  if (age === 'senior') { appState.elderly = true; document.documentElement.setAttribute('data-elderly','true'); }
+  updateUsername(name);
+  showPage('servicePage');
+}
+
+function doSignin() {
+  const name = document.getElementById('si-name').value.trim() || 'Friend';
+  const age = document.getElementById('si-age').value;
+  appState.username = name;
+  appState.ageGroup = age;
+  if (age === 'senior') { appState.elderly = true; document.documentElement.setAttribute('data-elderly','true'); }
+  updateUsername(name);
+  showPage('servicePage');
+}
+
+function updateUsername(name) {
+  const greet = name || 'Friend';
+  document.getElementById('ss-username').textContent = greet;
+  document.getElementById('heroName').textContent = greet;
+  document.getElementById('sidebarName').textContent = greet;
+  document.getElementById('profileName').textContent = greet;
+  const initials = greet[0]?.toUpperCase() || '😊';
+  document.getElementById('navAvatar').textContent = appState.pfp;
+  document.getElementById('sidebarAvatar').textContent = appState.pfp;
+  document.getElementById('profileAvatarLg').textContent = appState.pfp;
+  document.getElementById('reqPageAvatar').textContent = appState.pfp;
+}
+
+function goToApp() {
+  showPage('appPage');
+}
+function goToAuth() {
+  appState.username = 'Friend';
+  showPage('authPage');
+  closeSidebar();
+}
+
+// ===================== SIDEBAR =====================
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ===================== THEME =====================
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  appState.theme = newTheme;
+  const icon = isDark ? '🌙' : '☀️';
+  const label = isDark ? 'Dark Mode' : 'Light Mode';
+  const el1 = document.getElementById('themeIcon'); if (el1) el1.textContent = icon;
+  const el2 = document.getElementById('themeLabel'); if (el2) el2.textContent = label;
+  const el3 = document.getElementById('themeIcon2'); if (el3) el3.textContent = icon;
+  const el4 = document.getElementById('themeLabel2'); if (el4) el4.textContent = label;
+  const el5 = document.getElementById('profileThemeToggleLabel'); if (el5) el5.textContent = isDark ? 'Switch to Dark' : 'Switch to Light';
+  showToast(isDark ? '☀️ Light mode activated' : '🌙 Dark mode activated');
+}
+
+// ===================== ELDERLY MODE =====================
+function toggleElderly(toggleEl) {
+  appState.elderly = !appState.elderly;
+  toggleSwitch(toggleEl);
+  document.documentElement.setAttribute('data-elderly', appState.elderly ? 'true' : 'false');
+  showToast(appState.elderly ? '👴 Elderly mode ON — larger UI' : '👤 Elderly mode OFF');
+}
+
+function openElderMode() {
+  showPage('elderPage');
+}
+
+// ===================== TOGGLE SWITCH =====================
+function toggleSwitch(el) {
+  el.classList.toggle('on');
+}
+
+// ===================== MODALS =====================
+function openRequestModal() { document.getElementById('requestModal').classList.add('open'); }
+function openOfferModal() { document.getElementById('offerModal').classList.add('open'); }
+function openLocModal() { document.getElementById('locModal').classList.add('open'); }
+function closeAllModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open')); }
+function closeModals(e) { if (e.target.classList.contains('modal-overlay')) closeAllModals(); }
+
+// ===================== LOCATION =====================
+function selectRadius(el) {
+  el.closest('.radius-btns').querySelectorAll('.radius-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function detectLocation() {
+  showToast('📡 Detecting your precise location...');
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const loc = `Lat: ${pos.coords.latitude.toFixed(4)}, Lng: ${pos.coords.longitude.toFixed(4)}`;
+        const inp1 = document.getElementById('settLocInput');
+        const inp2 = document.getElementById('modalLocInput');
+        if (inp1) inp1.value = loc;
+        if (inp2) inp2.value = loc;
+        showToast('📍 Precise location detected!');
+      },
+      () => showToast('⚠️ Location access denied. Enter manually.')
+    );
+  } else {
+    showToast('⚠️ Geolocation not supported. Enter manually.');
+  }
+}
+
+function saveLocation() {
+  const inp = document.getElementById('settLocInput') || document.getElementById('modalLocInput');
+  const loc = inp ? inp.value.trim() : 'Kakkanad, Kochi';
+  appState.location = loc;
+  document.getElementById('heroLoc').textContent = loc;
+  showToast('📍 Location saved: ' + loc);
+  closeAllModals();
+}
+
+// ===================== PROFILE =====================
+function changePfp() { document.getElementById('pfpModal').classList.add('open'); }
+
+function setPfp(emoji) {
+  appState.pfp = emoji;
+  document.getElementById('navAvatar').textContent = emoji;
+  document.getElementById('sidebarAvatar').textContent = emoji;
+  document.getElementById('profileAvatarLg').textContent = emoji;
+  document.getElementById('reqPageAvatar').textContent = emoji;
+  showToast('✅ Profile picture updated!');
+  closeAllModals();
+}
+
+function setStatus(status, el) {
+  appState.status = status;
+  document.querySelectorAll('.status-pill').forEach(p => p.classList.remove('active-pill'));
+  el.classList.add('active-pill');
+  const dot = document.getElementById('sidebarStatusDot');
+  const txt = document.getElementById('sidebarStatusText');
+  if (dot) { dot.className = 's-status ' + status; }
+  const labels = { available: 'Available', unavailable: 'Unavailable', 'at-work': 'At Work' };
+  if (txt) txt.textContent = labels[status] || status;
+  showToast('✅ Status: ' + (labels[status] || status));
+}
+
+function setProfileTheme(el, theme) {
+  document.querySelectorAll('.pt-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+  appState.profileTheme = theme;
+  showToast('🎨 Profile theme set to ' + theme + '!');
+}
+
+function setActiveNav(el) {
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===================== MISC =====================
+function toggleChip(el) { el.classList.toggle('selected'); }
+
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Init
+showPage('');
+document.getElementById('splash').style.display = 'flex';
+</script>
+</body>
+</html>
