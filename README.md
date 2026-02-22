@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./img.png" alt="Project Banner" width="100%">
+  <img src="./img.png.jpeg" alt="Project Banner" width="100%">
 </p>
 
-# [Project Name] 🎯
+# [NearHelp] 🎯
 
 ## Basic Details
 
@@ -13,7 +13,7 @@
 - Member 2: [Adheena_Sajeev_Nair] - [TocH_institute_of_science_and_technology]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+[project hosted link]
 
 ### Project Description
 [A location-based community app where nearby people can:
@@ -42,18 +42,18 @@ No structured trust-based system exists.]
 ### Technologies/Components Used
 
 **For Software:**
-- Languages used: [HTML]
+- Languages used: [HTML,Javascript]
 - Frameworks used: []
 - Libraries used: []
-- Tools used: [e.g., VS Code, Git, Calude AI]
+- Tools used: [VS Code, Git, Calude AI]
 
 ---
 
 ## Features
 
 List the key features of your project:
-- Feature 1: [Description]
-- Feature 2: [Description]
+- Feature 1: [Community_Building]
+- Feature 2: [Desc]
 - Feature 3: [Description]
 - Feature 4: [Description]
 
